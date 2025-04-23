@@ -74,11 +74,12 @@ export default function SignUp({ action} : SignUpProps) {
                                         type='submit'
                                         disabled={isPending}
                                         title='Submit form'
-                                        className={`w-full bg-rose-600 text-white py-3 rounded-md hover:bg-rose-700 transition-colors font-medium flex justify-center items-center gap-2`}
-                                >
+                                        className={`w-full bg-rose-600 text-white py-3 rounded-md hover:bg-rose-700 transition-colors font-medium flex justify-center items-center gap-2 cursor-pointer`}
+                                > 
                                         {isPending ? (
                                                 <React.Fragment>
-                                                        <Loader2/>
+                                                        <Loader2 className='h-4 w-4 animate-spin'/>
+                                                        CREATING ACCOUNT...
                                                 </React.Fragment>
                                         ) : (
                                                 'CREATE ACCOUNT'
