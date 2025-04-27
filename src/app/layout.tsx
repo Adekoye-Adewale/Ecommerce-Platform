@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Header from "@/components/layouts/header";
 import "./globals.css";
+import { getCurrentSession } from "@/actions/auth";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -13,19 +14,24 @@ export const metadata: Metadata = {
   description: "Buy affordable items today",
 };
 
-export default function RootLayout({
+const RootLayout = async ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
+
+  const { user } = await getCurrentSession();
+
   return (
     <html lang="en">
       <body
         className={`${inter.variable} antialiased bg-white min-h-[125vh]`}
       >
-        <Header/>
+        <Header user={user}/>
         {children}
       </body>
     </html>
   );
 }
+
+export default RootLayout;
