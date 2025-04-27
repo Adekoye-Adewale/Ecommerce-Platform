@@ -17,7 +17,7 @@ export default function SignUp({ action} : SignUpProps) {
         return (
                 <Form 
                         action={formAction}
-                        className='max-w-md mx-auto my-16 bg-white rounded-lg shadow-md'
+                        className='max-w-md mx-auto my-16 bg-white rounded-lg shadow-md p-6'
                 >
                         <h1 className='text-2xl font-bold text-center mb-2'>
                                 Join the EP Stores Family
@@ -85,6 +85,12 @@ export default function SignUp({ action} : SignUpProps) {
                                                 'CREATE ACCOUNT'
                                         )}
                                 </button>
+
+                                {state?.message && state.message.length > 0 && (
+                                        <p className='text-center text-sm text-red-600'>
+                                                {state.message}
+                                        </p>
+                                )}
                         </div>
                 </Form>
         )
