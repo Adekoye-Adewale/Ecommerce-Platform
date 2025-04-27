@@ -1,8 +1,15 @@
 'use client'
 import React, { useEffect, useState } from 'react'
+import { User } from '@/generated/prisma';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { logoutUser } from '@/actions/auth';
 
-export default function Header() {
+type HeaderProps = {
+        user: Omit<User, 'passwordHash'> | null;
+}
+
+export default function Header( { user } : HeaderProps) {
 
         const [isOpen, setIsOpen] = useState<boolean>(true);
         const [prevScrollY, setPrevScrollY] = useState<number>(0);
@@ -34,7 +41,7 @@ export default function Header() {
                 <header className='w-full sticky top-0 z-50'>
                         <div className={`w-full transform transitio-transform duration-300 ease-in-out ${isOpen ? `translate-y-0` : `-translate-y-full`}`}>
                                 <AnnouncementBar/>
-                                <NavigationBar/>
+                                <NavigationBar user={user}/>
                         </div>
                 </header>
         )
@@ -52,7 +59,11 @@ const AnnouncementBar = () => {
         )
 }
 
-const NavigationBar = () => {
+
+const NavigationBar = ({ user }: HeaderProps) => {
+
+        const router = useRouter();
+
         return (
                 <div className='w-full flex items-center justify-between py-3 sm:py-4 bg-white/80 shadow-sm  border-b border-gray-100 backdrop-blur-sm'>
                         <div className='flex justify-between items-center container mx-auto px-8'>
@@ -76,8 +87,34 @@ const NavigationBar = () => {
                                         <button title='search icon' className='text-gray-700 hover:text-gray-900 hidden sm:block'>
                                                 <SearchIcon/>
                                         </button>
-                                        <Link href='/auth/sign-in'>Sign In</Link>
-                                        <Link href='/auth/sign-up'>Sign Up</Link>
+
+                                        {user ? (
+                                                <div className='flex items-center gap-2 sm:gap-4'>
+                                                        <span className='text-sm text-gray-700 hidden md:block'>
+                                                                {user.email}
+                                                        </span>
+                                                        <Link
+                                                                href="#"
+                                                                className='text-xs sm:text-sm font-medium text-gray-700 hover:text-gray-900'
+                                                                onClick={async (e) => {
+                                                                        e.preventDefault();
+                                                                        await logoutUser();
+                                                                        router.refresh();
+                                                                }}
+                                                        >
+                                                                Log out
+                                                        </Link>
+                                                </div>
+                                        ) : (
+                                                <React.Fragment>
+                                                        <Link href='/auth/sign-in' className='text-xs sm:text-sm font-medium text-gray-700 hover:text-gray-900'>
+                                                                Sign In
+                                                        </Link>
+                                                        <Link href='/auth/sign-up' className='text-xs sm:text-sm font-medium text-gray-700 hover:text-gray-900'>
+                                                                Sign Up
+                                                        </Link>
+                                                </React.Fragment>        
+                                        )}
                                         <button title='cart icon' className='text-gray-900 relative'>
                                                 <CartIcon/>
                                                 <span className='absolute -top-1 -right-1 bg-black text-white text-[10px] sm:text-xs w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full flex items-center justify-center'>
