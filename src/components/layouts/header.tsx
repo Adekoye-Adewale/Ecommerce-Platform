@@ -7,9 +7,10 @@ import { logoutUser } from '@/actions/auth';
 
 type HeaderProps = {
         user: Omit<User, 'passwordHash'> | null;
+        categorySelector: React.ReactNode;
 }
 
-export default function Header( { user } : HeaderProps) {
+export default function Header({ user, categorySelector } : HeaderProps) {
 
         const [isOpen, setIsOpen] = useState<boolean>(true);
         const [prevScrollY, setPrevScrollY] = useState<number>(0);
@@ -41,7 +42,10 @@ export default function Header( { user } : HeaderProps) {
                 <header className='w-full sticky top-0 z-50'>
                         <div className={`w-full transform transitio-transform duration-300 ease-in-out ${isOpen ? `translate-y-0` : `-translate-y-full`}`}>
                                 <AnnouncementBar/>
-                                <NavigationBar user={user}/>
+                                <NavigationBar 
+                                        user={user} 
+                                        categorySelector={categorySelector}
+                                />
                         </div>
                 </header>
         )
@@ -60,7 +64,7 @@ const AnnouncementBar = () => {
 }
 
 
-const NavigationBar = ({ user }: HeaderProps) => {
+const NavigationBar = ({ user, categorySelector }: HeaderProps) => {
 
         const router = useRouter();
 
@@ -72,9 +76,10 @@ const NavigationBar = ({ user }: HeaderProps) => {
                                                 <LogoBlack/>
                                         </Link>
                                         <nav className='hidden md:flex gap-4 lg:gap-6 text-sm font-medium'>
-                                                <Link href='#'>Shop</Link>
-                                                <Link href='#'>New Arrivals</Link>
-                                                <Link href='#'>Sales</Link>
+                                                {/* <Link href='#'>Shop</Link>
+                                                <Link href='#'>New Arrivals</Link> */}
+                                                {categorySelector}
+                                                {/* <Link href='#'>Sales</Link> */}
                                         </nav>
                                 </div>
                                 <Link 
