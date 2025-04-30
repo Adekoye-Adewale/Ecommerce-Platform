@@ -4,6 +4,7 @@ import { User } from '@/generated/prisma';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { logoutUser } from '@/actions/auth';
+import HeaderSearchBar from './headerSearchBar';
 
 type HeaderProps = {
         user: Omit<User, 'passwordHash'> | null;
@@ -89,9 +90,7 @@ const NavigationBar = ({ user, categorySelector }: HeaderProps) => {
                                         <LogoBlack/>
                                 </Link>
                                 <div className='flex flex-1 justify-end items-center gap-2 sm:gap-4'>
-                                        <button title='search icon' className='text-gray-700 hover:text-gray-900 hidden sm:block'>
-                                                <SearchIcon/>
-                                        </button>
+                                        <HeaderSearchBar/>
 
                                         {user ? (
                                                 <div className='flex items-center gap-2 sm:gap-4'>
